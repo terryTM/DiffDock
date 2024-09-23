@@ -38,7 +38,9 @@ from tqdm import tqdm
 if os.name != 'nt':  # The line does not work on Windows
     import resource
     rlimit = resource.getrlimit(resource.RLIMIT_NOFILE)
-    resource.setrlimit(resource.RLIMIT_NOFILE, (64000, rlimit[1]))
+    new_limit = min(64000, rlimit[1])  # Use the minimum of 64000 or the system max limit
+    resource.setrlimit(resource.RLIMIT_NOFILE, (new_limit, rlimit[1]))
+
 
 RDLogger.DisableLog('rdApp.*')
 
