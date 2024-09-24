@@ -9,7 +9,8 @@ torch.multiprocessing.set_sharing_strategy('file_system')
 
 import resource
 rlimit = resource.getrlimit(resource.RLIMIT_NOFILE)
-resource.setrlimit(resource.RLIMIT_NOFILE, (64000, rlimit[1]))
+new_limit = min(64000, rlimit[1])  # Use the minimum of 64000 or the system max limit
+resource.setrlimit(resource.RLIMIT_NOFILE, (new_limit, rlimit[1]))
 
 import time
 from argparse import ArgumentParser, Namespace, FileType
